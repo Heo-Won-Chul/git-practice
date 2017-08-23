@@ -40,13 +40,13 @@
 ### Git 설치하기
 
 - Linux (Fedora)
-	- ```text
+	```text
 		$ sudo yum install git-all
-	  ```
+	```
 - Linux (Ubuntu)
-	- ```text
+	```text
 		$ sudo apt-get install git-all
-	  ```
+	```
 - Mac
 	- http://git-scm.com/download/mac
 
@@ -115,3 +115,90 @@
 
 - 파일 이름 변경하기
 	- `git mv {file_from} {file_to}`
+	
+### 커밋 히스토리 조회 하기
+
+- `git log`
+- SHA-1 체크섬, 저자 이름, 저자 이메일 커밋한 날짜 커밋 메시지 보여줌
+- 각 커밋의 diff : `git log -p`
+- 각 커밋의 통계 정보 : `git log --stat`
+- 히스토리 형식 변경 : `git log --pretty={oneline|short|full|fuller|format}`
+	- format 옵션(%H, %h, %T, %t, %P, %p, %an, %ae, %ad, %ar, %cn, %ce, %cd, %cr, %s)
+- 브랜치와 머지 히스터리 정보를 아스키 그래프 : `git log --graph`
+- 히스토리 갯수 : `git log -{n}`
+- 히스토리 시간 : `git log --since | --after` | `git log --until | --before`
+	```text
+		n주 동안 : {n}.weeks
+		절대 날짜 : "2017-08-23"
+		상대 날짜 : "2 years 1 day 3 minutes ago"
+	``` 
+- 히스토리 저자 : `git log --author`
+- 히스토리 키워드 : `git log --grep`
+
+	> 저자와 키워드 모두 만족하는 커밋을 찾으려면 `--all-match` 옵션을 사용
+
+- 히스토리 내용 : `git log --S{word}`
+
+### 되돌리기
+
+- 완료된 커밋 수정 : `git commit --amend`
+- 아래 명령어는 하나의 커밋으로 기록
+	```text
+		$ git commit -m 'initial commit'
+		$ git add forgotten_file
+		$ git commit --amend
+	```
+- 파일 Unstage 상태로 변경 : `git reset HEAD {file}`
+
+	> `git reset` 명령은 위험하기 때문에 되도록이면 사용하지 않는다.
+	
+- Modified 파일 되돌리기 : `git checkout -- {file}`
+
+	> `git checkout` 명령은 위험하기 때문에 되도록이면 사용하지 않는다.
+	
+- Stash와 Branch를 사용하자.
+
+### 리모트 저장소
+
+- 리모트 저장소 확인 : `git remote`
+- 단축이름과 URL 포함 : `git remote -v`
+- 리모트 저장소 추가 : `git remote add {단축 이름} {url}`
+- 리모트 저장소 가져오기(no merge) : `git fetch {단축 이름}`
+- 리모트 저장소 가져오기(merge) : `git pull {단축 이름}`
+- 리모트 저장소 공유하기 : `git push {단축 이름} {브랜치 이름}`
+- 리모트 저장소 살펴보기 : `git remote show {단축 이름}`
+- 리모트 저장소 이름 변경 : `git remote rename {단축 이름} {새 단축 이름}`
+- 리모트 저장소 삭제 : `git remote remove {단축 이름}` | `git remote rm {단축 이름}`
+
+### 태그
+
+- 태그 조회 : `git tag` 
+- 태그 조회 (검색 패턴) : `git tag -l "{*word*}"`
+- 태그 정보와 커밋 정보 확인 : `git show`
+- 태그 붙이기
+	1. Lightweight 태그
+		- 특정 커밋에 대한 포인터
+		- `git tag {tag}`
+	2. Annotated 태그 
+		- 태그 만든 사람 이름, 이메일 등록 날짜 메시지 저장
+		- `git tag -a {tag} -m "{message}"`
+- 나중에 태그하기 : `git tag -a {tag} {체크섬}`
+- 태그 공유하기 : `git push {단축 이름} {tag}`
+- 태그 공유하기(복수) : `git push {단축 이름} --tags`
+	
+	> `git push` 명령은 자동으로 리모스 서버에 태그를 전송하지 않는다.
+	
+- 태그 checkout 하기 : `git checkout -b {new branch name} {tag}`
+
+	> 태그는 브랜치와 달리 머킷을 바꿀 수 없기 때문에 새로운 브랜치를 만들어 작업해야 한다.
+	
+### Git Alias
+
+- Git 명령어를 alias로 만들 수 있다.
+- 예를 들면, `git commit` 을 `git ci` 로 대체 할 수 있다.
+	```text
+		$ git config --global alias.co checkout
+		$ git config --global alias.br branch
+		$ git config --global alias.ci commit
+		$ git config --global alias.st status
+	```
