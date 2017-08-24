@@ -128,9 +128,9 @@
 - 히스토리 갯수 : `git log -{n}`
 - 히스토리 시간 : `git log --since | --after` | `git log --until | --before`
 	```text
-		n주 동안 : {n}.weeks
-		절대 날짜 : "2017-08-23"
-		상대 날짜 : "2 years 1 day 3 minutes ago"
+	n주 동안 : {n}.weeks
+	절대 날짜 : "2017-08-23"
+	상대 날짜 : "2 years 1 day 3 minutes ago"
 	``` 
 - 히스토리 저자 : `git log --author`
 - 히스토리 키워드 : `git log --grep`
@@ -144,9 +144,9 @@
 - 완료된 커밋 수정 : `git commit --amend`
 - 아래 명령어는 하나의 커밋으로 기록
 	```text
-		$ git commit -m 'initial commit'
-		$ git add forgotten_file
-		$ git commit --amend
+	$ git commit -m 'initial commit'
+	$ git add forgotten_file
+	$ git commit --amend
 	```
 - 파일 Unstage 상태로 변경 : `git reset HEAD {file}`
 
@@ -197,8 +197,17 @@
 - Git 명령어를 alias로 만들 수 있다.
 - 예를 들면, `git commit` 을 `git ci` 로 대체 할 수 있다.
 	```text
-		$ git config --global alias.co checkout
-		$ git config --global alias.br branch
-		$ git config --global alias.ci commit
-		$ git config --global alias.st status
+	$ git config --global alias.co checkout
+	$ git config --global alias.br branch
+	$ git config --global alias.ci commit
+	$ git config --global alias.st status
 	```
+
+## Git 브랜치
+
+### 브랜치란 무엇인가?
+
+- 코드를 통째로 복사하고 나서 원래 코드와 상관없이 독립적으로 개발을 진행 하는 것
+- Git의 브랜치는 매우 가볍다.
+- 브랜치를 만들어 작업하고 Merge 하는 방법을 권장
+- Git 데이터는 스냅샷을 이용하여 기록한다.
