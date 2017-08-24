@@ -209,5 +209,31 @@
 
 - 코드를 통째로 복사하고 나서 원래 코드와 상관없이 독립적으로 개발을 진행 하는 것
 - Git의 브랜치는 매우 가볍다.
-- 브랜치를 만들어 작업하고 Merge 하는 방법을 권장
 - Git 데이터는 스냅샷을 이용하여 기록한다.
+- Git 저장소에 파일을 blob이라고 부른다.
+- 브랜치를 만들어 작업하고 Merge 하는 방법을 권장
+- Git의 브랜치는 커밋 사이를 가볍게 이동할 수 있는 포인터 같은 것 이다.
+- 새 브랜치 생성 : `git branch {name}`
+	- 새로 만든 브랜치는 지금 작업하고 있던 마지막 커밋을 가리킨다.
+- 현재 작업 중인 브랜치를 가리키는 특수한 포인터인 HEAD가 있다.
+	- 브랜치 커밋 내용 확인 : `git log --decorate`
+- 브랜치 이동하기 : `git checkout {name}`
+
+### 브랜치와 Merge의 기초
+
+- 브랜치 생성 및 checkout : `git checkout -b {name}`
+- 브랜치 삭제 : `git branch -d {name}`
+- 브랜치 합침 : `git merge {name}`
+- Fast forward 방식 Merge : Merge를 하였으나, Merge 과정 없이 그저 최신 커밋으로 이동
+- 3-way Merge : 결과를 별도의 커밋으로 만들어서 가리키도록 이동 (Merge 커밋)
+- merge 충돌 시, `git status`명령으로 확인하면 unmerged 상태로 표기
+	- `======` 위쪽은 HEAD 내용, 아래쪽은 해당 브랜치 내용
+	- `git mergetool`명령으로 충돌 해결
+	- 충돌 해결 후, `git commit`에는 해당 내용을 자세헤게 기록된다.
+	
+### 브랜치 관리
+
+- 브랜치 목록 : `git branch` (현재 checkout 브랜치는 앞에 * 표기)
+- 마지막 커밋 표기 : `git branch -v`
+- merge 필터링 : `git branch --(merged|no-merged)`
+- 브랜치 강제 삭제 : `git branch -D {name}` (merge 하지 않은 브랜치는 `-d`로 삭제 되지 않는다.)
