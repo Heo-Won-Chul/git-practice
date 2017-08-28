@@ -237,3 +237,42 @@
 - 마지막 커밋 표기 : `git branch -v`
 - merge 필터링 : `git branch --(merged|no-merged)`
 - 브랜치 강제 삭제 : `git branch -D {name}` (merge 하지 않은 브랜치는 `-d`로 삭제 되지 않는다.)
+
+### 브랜치 워크플로
+
+- 브랜치를 만들고 Merge 하는 Flow 방식(?)
+- LongRunning 브랜치
+	- 안정적인 `master` 브랜치를 두고 개발 브랜치를 만들어 Merge 하는 방식
+	- 규모가 크고 복잡한 프로젝트에 유용
+- 토픽 브랜치
+	- 프로젝트 크기에 상관없음
+	- 한 가지 주제나 작업을 위한 짧은 호흡의 브랜치
+	
+### 리모트 브랜치
+
+- 리모트 Refs는 리모트 저장소에 있는 포인터인 레퍼런스이다. (브랜치, 태그 등등)
+- 모든 리모트 Refs 조회 : `git ls-remote {branch name}`
+- 모든 리모트 브랜치와 그 정보 조회 : `git remote show {branch name}`
+- 보통 리모트 Refs보다는 리모트 트래킹 브랜치(리모트 브랜치를 추적하는 브랜치, 일종의 북마크)를 사용한다.
+- 리모트 트래킹 브랜치를 로컬 브랜치로 Checkout 하면 자동으로 `트래킹 브랜치`가 만들어진다.
+	- 서버 저장소에서 `master` 브랜치를 clone 하면, git에서 `orgin/master`의 트래킹 브랜치인 `master` 브랜치를 만든다.
+- 리모트의 특정 브랜치를 추적 : `git branch -(u|set-upstream-to)`
+- 추적 브랜치 확인 : `git branch -vv`
+- `git pull` = `git fetch` + `git merge`
+- 리모트 브랜치 삭제 : `git push {리모트 저장소} --delete {branch name}`
+
+### Rebase 하기
+
+- 브랜치 합치는 방법
+	1. Merge
+	2. Rebase
+- rebase : 한 브랜치에서 변경된 사항을 다른 브랜치로 적용하는 방식
+	1. 합칠 브랜치를 어딘가에 임시로 저장해놓는다.
+	2. rebase 브랜치가 합칠 브랜치가 가리키는 커밋을 가리키게 한다.
+	3. 합칠 브랜치를 Fast forward 시킨다.
+- 보다 깔끔한 히스토리
+- rebase : `git rebase {베이스 브랜치} {브랜치}`
+- 브랜치의 브랜치를 다른 브랜치에 적용시키는 방법 : `git rebase --onto {다른 브랜치} {브랜치} {브랜치의 브랜치}`
+- 이미 저장소에 push한 커밋을 rebase하면 안된다.
+- rebase한 것을 rebase 하기 : `git pull --rebase`
+
