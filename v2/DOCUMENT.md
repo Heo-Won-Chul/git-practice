@@ -6,7 +6,7 @@
 
 - 파일 변화를 시간에 따라 기록했다가 나중에 특정 시점의 버전을 다시 꺼내올 수 있는 시스템
 - 로컬 버전 관리(VCS) -> 중앙 집중식 버전 관리(CVCS) -> __분산 버전 관리 시스템 (DVCS)__
- 
+
 ### 짧게 보는 Git의 역사
 
 - 특징
@@ -41,11 +41,11 @@
 
 - Linux (Fedora)
 	```text
-		$ sudo yum install git-all
+	$ sudo yum install git-all
 	```
 - Linux (Ubuntu)
 	```text
-		$ sudo apt-get install git-all
+	$ sudo apt-get install git-all
 	```
 - Mac
 	- http://git-scm.com/download/mac
@@ -81,7 +81,7 @@
 
 - 파일 새로 추적하기
 	- `git add {file}`
-	
+
 - Modified 파일 Stage 하기
 	- `git add`는 파일을 새로 추적할 떄도 사용하고 수정한 파일을 Staged 만들 때도 사용한다.
 
@@ -96,7 +96,7 @@
 	- 파일 패턴을 적음
 		- 빈 라인이나 #으로 시작하는 라인 무시
 		- 표준 Glob 패턴 사용
-		
+
 - Staged 와 Unstaged 상태의 변경 내용 보기
 	- `git diff`
 	- Staging Area 에 넣은 파일의 변경 부분을 보고 싶으면 `git diff --staged`
@@ -115,7 +115,7 @@
 
 - 파일 이름 변경하기
 	- `git mv {file_from} {file_to}`
-	
+
 ### 커밋 히스토리 조회 하기
 
 - `git log`
@@ -131,7 +131,7 @@
 	n주 동안 : {n}.weeks
 	절대 날짜 : "2017-08-23"
 	상대 날짜 : "2 years 1 day 3 minutes ago"
-	``` 
+	```
 - 히스토리 저자 : `git log --author`
 - 히스토리 키워드 : `git log --grep`
 
@@ -151,11 +151,11 @@
 - 파일 Unstage 상태로 변경 : `git reset HEAD {file}`
 
 	> `git reset` 명령은 위험하기 때문에 되도록이면 사용하지 않는다.
-	
+
 - Modified 파일 되돌리기 : `git checkout -- {file}`
 
 	> `git checkout` 명령은 위험하기 때문에 되도록이면 사용하지 않는다.
-	
+
 - Stash와 Branch를 사용하자.
 
 ### 리모트 저장소
@@ -172,26 +172,26 @@
 
 ### 태그
 
-- 태그 조회 : `git tag` 
+- 태그 조회 : `git tag`
 - 태그 조회 (검색 패턴) : `git tag -l "{*word*}"`
 - 태그 정보와 커밋 정보 확인 : `git show`
 - 태그 붙이기
 	1. Lightweight 태그
 		- 특정 커밋에 대한 포인터
 		- `git tag {tag}`
-	2. Annotated 태그 
+	2. Annotated 태그
 		- 태그 만든 사람 이름, 이메일 등록 날짜 메시지 저장
 		- `git tag -a {tag} -m "{message}"`
 - 나중에 태그하기 : `git tag -a {tag} {체크섬}`
 - 태그 공유하기 : `git push {단축 이름} {tag}`
 - 태그 공유하기(복수) : `git push {단축 이름} --tags`
-	
+
 	> `git push` 명령은 자동으로 리모스 서버에 태그를 전송하지 않는다.
-	
+
 - 태그 checkout 하기 : `git checkout -b {new branch name} {tag}`
 
 	> 태그는 브랜치와 달리 머킷을 바꿀 수 없기 때문에 새로운 브랜치를 만들어 작업해야 한다.
-	
+
 ### Git Alias
 
 - Git 명령어를 alias로 만들 수 있다.
@@ -230,7 +230,7 @@
 	- `======` 위쪽은 HEAD 내용, 아래쪽은 해당 브랜치 내용
 	- `git mergetool`명령으로 충돌 해결
 	- 충돌 해결 후, `git commit`에는 해당 내용을 자세헤게 기록된다.
-	
+
 ### 브랜치 관리
 
 - 브랜치 목록 : `git branch` (현재 checkout 브랜치는 앞에 * 표기)
@@ -247,7 +247,7 @@
 - 토픽 브랜치
 	- 프로젝트 크기에 상관없음
 	- 한 가지 주제나 작업을 위한 짧은 호흡의 브랜치
-	
+
 ### 리모트 브랜치
 
 - 리모트 Refs는 리모트 저장소에 있는 포인터인 레퍼런스이다. (브랜치, 태그 등등)
@@ -276,3 +276,43 @@
 - 이미 저장소에 push한 커밋을 rebase하면 안된다.
 - rebase한 것을 rebase 하기 : `git pull --rebase`
 
+## Git 서버
+
+### 프로토콜
+
+- 리모트 저장소는 일반적으로 워킹 디렉토리가 없는 Bare 저장소 이다.
+	- Bare 저장소 : 일반 프로젝트에서 `.git` 디렉토리만 있는 저장소
+- 프로토콜
+	- Local, HTTP, SSH, Git 등의 프로토콜 지원
+	- 로컬 프로토콜
+		- 리모트 저장소가 단순히 디스크의 다른 디렉토리에 존재
+		- 파일경로
+			1. 직접 쓸 때 : 복사나 하드링크 사용
+			2. `file://` : 별도의 프로세스를 생성하여 처리
+		- 장점
+			1. 간단하다.
+			2. 타저장소 가져오기 용이
+		- 단점
+			1. 디렉토리 공유 불편
+			2. 마운트 중에는 빠르지 않다.
+			3. 우발적 사고에 보호되지 않는다.
+	- HTTP 프로토콜
+		- 스마트 HTTP : SSH나 Git 프로토콜처럼 통신
+		- 멍청한 HTTP : 원격 저장소를 파일 건네주는 웹 서버로 취급
+	- SSH 프로토콜
+		- Git의 대표 프로토콜
+		- 아무런 외부 도구 없이 Git 서버 구축 가능
+		- 장점
+			1. 상대적으로 설정이 쉽다.
+			2. 보안에 안전하다.
+			3. 전송 시, 데이터를 가능한한 압축하기 때문에 효율적이다.
+		- 단점
+			1. 익명 접근 불가능
+	- Git 프로토콜
+		- Git에 포함된 데몬을 사용하는 것
+		- 9418 포트 사용
+		- SSH 프로토콜과 비슷한 서비스 제공(인증 메커니즘 X)
+		- 장점
+			1. 전송 속도가 가장 빠르다.
+		- 단점
+			1. 인증 메커니즘이 없다.
