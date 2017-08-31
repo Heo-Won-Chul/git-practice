@@ -316,3 +316,70 @@
 			1. 전송 속도가 가장 빠르다.
 		- 단점
 			1. 인증 메커니즘이 없다.
+
+### 서버에 Git 설치하기
+
+- 서버에 Git 설치하기
+	- Bare 저장소 만듬
+	- `git clone --bare project project.git`
+	- `cp -Rf project/.git project.git` 과 동일
+- 서버에 Bare 저장소 넣기
+	- 도메인프로토콜 설정
+	- SSH 접속 가능한 Git 저장소 : `scp -r project.git user@git.example.com:/srv/git`
+- SSH 접속
+	1. 각각의 계정 기입
+	2. 서버마다 git 계정 만듬
+	3. LDAP 서버 이용
+
+### SSH 공개키 만들기
+
+- SSH 공개키 만들기
+	1. 키 존재여부 확인
+		- 기본적으로 `~/.ssh` 디렉토리에 저장
+		- `.pub`은 공개키 다른 파일은 개인키
+	2. (`.ssh` 디렉토리가 없거나 해당 파일들이 없다면) 생성
+		- `ssh-keygen`으로 생성
+
+### 서버 설정하기
+
+- git 계정 추가 및 `.ssh` 디렉토리 안에 `authorized_keys` 파일 추가
+- 공개키 `authorized_keys` 파일에 추가 : `cat {.pub} >> ~/ .ssh/authorized_keys`
+- ~~
+
+### Git 데몬
+
+- 인증 기능이 없는 Git 저장소를 만들 수 있는 가장 빠른 방법
+- `git daemon --reuseaddr --base-path=/srv/git/ /srv/git/`
+	- `--reuseraddr` : 서버가 기존의 연결이 타임아웃될 때까지 기다리지 말고 바로 재시작하게 하는 옵션
+	- `--base-path` : clone 시, 전체 경로 사용하지 않도록 하는 옵션
+- 우분투 기준으로 Upstart 스크립트를 이용하여 Git 데몬을 실행 : `/etc/init/local-git-daemon.conf`
+
+### 스마트 HTTP
+
+- 기본적인 Git 서버 실행(v1.6.6+) : `git-http-backend`
+- CGI 서버 연동(ex. apache)
+	- CGI 란?
+		```text
+		공용 게이트웨이 인터페이스(Common Gateway Interface; CGI)라고도 하는 CGI는 http 통신규약을 사용하는 웹서버의 80번 포트를 통해서 웹 서버에 질의(query; 물어보는 것)하는 일련의 데이타 스트링을 보내서 서버에 문의를 하면, 웹 서버는 임의의 처리를 거친 가공된 데이타를 웹 클라이언트에 보내주는 것으로서 "문의"와 "답변"을 주고받는 통신 및 처리규약
+		```
+
+### GitWeb
+
+- Git은 웹에서 저장소를 조회할 수 있는 GitWeb이라는 CGI 스크립트를 제공
+- `lighttpd`나 `webrick`같은 경량 웹 서버가 설치돼 있어야 사용 가능
+- `git instaweb --httpd=(lighttpd|webrick)` (default : lighttpd)
+
+### GitLab
+
+- 널리 사용하는 서버 중 하나
+- 데이터베이스와 따로 연동해야하는 웹 애플리케이션
+- 설치
+	- `https://bitnami.com/stack/gitlab`
+- 관리자
+	- 기본 사용자이름은 `admin@local.host`, 암호는 `5iveL!fe`이다
+- ~~
+
+### 또 다른 선택지, 호스팅
+
+- Git 서버 직접 운영 부담 → Git 호스팅 서비스
+- Github : 가장 큰 Git 호스팅 서비스
