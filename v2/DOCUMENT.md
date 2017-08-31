@@ -383,3 +383,69 @@
 
 - Git 서버 직접 운영 부담 → Git 호스팅 서비스
 - Github : 가장 큰 Git 호스팅 서비스
+
+
+## 분산 환경에서의 Git
+
+### 분산 환경에서의 워크플로
+
+- Git은 분산형이다.
+- 저장소 운영방식 비교
+	1. 중앙집중식 워크플로
+		- 하나의 저장소에 여러 개발자가 push&merge
+		- 작은 팀에서 유용
+	2. Intergration-Manager 워크플로
+		- 리모트 저장소를 여러 개 운영
+		- 대표하는 공식 저장소가 존재
+		- Intergration-Manager는 기여자의 저장소를 리모트 저장소로 등록하고, 로컬에서 기여물을 테스트하고, 프로젝트 메인브랜치에 Merge하고, 그 내용을 다시 프로젝트 메인 저장소에 Push
+	3. Dictator and Lieutenants 워크플로
+		- 리모트 저장소를 여러 개 운영하는 방식을 변형한 구조
+		- 수백 명의 개발자가 참여하는 아주 큰 프로젝트에 이용
+		- Lieutenants : 여러 명의 Intergration-Manager
+		- Benevolent Dictator : Lieutenants의 최종 관리자
+
+### 프로젝트에 기여하기
+
+- Git은 유연하게 설계되어 여러 가지 방식이 존재
+- 여러 변수 존재
+	1. 활발히 활동하는 개발자의 수 → 최신 코드 유지 어려움
+	2. 프로젝트에서 선택한 워크플로
+	3. 접근 권한
+- 커밋 가이드라인
+	- https://github.com/git/git/blob/master/Documentation/SubmittingPatches 참고
+	- 여러가지 이슈를 하나의 커밋에 담지 않는다.
+	- 좋은 커밋 메시지를 작성해야 한다.
+
+### 프로젝트 관리하기
+
+- 운영 방법
+	1. `format-patch` 명령으로 생성한 Patch를 이메일로 받아서 프로젝트에 Patch를 적용
+	2. 프로젝트의 다른 리모트 저장소로부터 변경 내용을 Merge
+- 토픽 브랜치에서 일하기
+	- 메인 브랜치 통합 전 임시 브랜치에서 통합 테스트
+- 이메일로 받은 Patch를 적용하기
+	- 우선 토픽 브랜치에 Patch 적용
+	- Patch 적용 방법 : `git apply` `git am`
+- 리모트 브랜치로부터 통합하기
+- 기여물 통합하기
+ 	- Merge하는 워크플로
+		- 가장 간단한 시나리오
+		- `master` 브랜치에 merge할 때마다 해당 토픽 브랜치를 삭제
+	- 대규모 Merge 워크플로
+		- LongRunning 브랜치를 4개 운영(`master`, `next`, `pu`, `maint`)
+		- 토픽 브랜치가 안정화되면 `next`, 개선이 필요하면 `pu`
+		- 마지막 릴리즈 `maint`
+	- Rebase와 Cherry-Pick 워크플로
+		- 히스토리를 한 줄로 관리하기 위해 `master` 브랜치를 기반으로 Rebase
+- Rerere
+	- 수시로 Merge나 Rebase를 한다거나 오랫동안 유지되는 토픽브랜치는 쓸 때 `rerere` 사용
+	- 글로버 설정 변경 : `git config --global rerere.enabled (true/false)`
+	- `git rerere`
+- 릴리즈 버전에 태그 달기
+- 빌드넘버 만들기
+	- `git describe`
+- 릴리즈 준비하기
+	- `git archive`
+- Shortlog 보기
+	- 이메일로 프로젝트의 변경 사항을 알릴 때, 지난 릴리즈 이후 변경 사항 목록 가져오기
+	- `git Shortlog`
