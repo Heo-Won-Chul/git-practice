@@ -449,3 +449,103 @@
 - Shortlog 보기
 	- 이메일로 프로젝트의 변경 사항을 알릴 때, 지난 릴리즈 이후 변경 사항 목록 가져오기
 	- `git Shortlog`
+
+## GitHub
+
+### 계정 만들고 설정하기
+
+- 가장 큰 Git 저장소 호스트
+- 많은 오픈소스 프로젝트는 GitHub을 이용해서 Git 호스팅, 이슈 트래킹, 코드 리뷰, 등등의 일을 한다.
+- 관리, Git 저장소 사용법, 프로젝트 기여, GitHub 인터페이스
+- 계정 만들기
+	- https://github.com
+- SSH 사용하기
+	- 개인의 공개키 등록
+	- `~/.ssh/id_rsa.pub` 파일 내용 복사&붙여넣기
+- 아바타
+	- Profile 변경 가능
+- 사용자 이메일 주소
+	- Git 커밋에 있는 이메일 주소를 보고 사용자 식별
+	- 여러 Email 등록 가능
+- 투팩터 인증
+	- 더 안전한 보안을 위해서 "2FA" 인증 설정
+		1. OTP
+		2. SMS
+
+### GitHub 프로젝트에 기여하기
+
+- 프로젝트 Fork 하기
+	- GitHub이 프로젝트를 통째로 복사해준다.
+- GitHub 플로우
+	- Pull Request가 중심인 협업 워크플로를 위주로 설계(Fork 해서 프로젝트에 기여하는 방법)
+		1. `master`에서 토픽 브랜치를 만든다.
+		2. 무엇인가를 수정해서 커밋한다.
+		3. 자신의 GitHub 프로젝트에 브랜치를 Push 한다.
+		4. GibHub에 Pull Request를 연다.
+		5. 토론하면서 그에 따라 계속 커밋한다.
+		6. 프로젝트 소유자는 Pull Request를 Merge 하고 닫는다.
+	- 기본적으로 `Intergration-Manager 워크플로`와 동일
+	- Pull Request 만들기
+		1. Fork한 개인 저장소를 로컬에 Clone한다.
+		2. 무슨 일인지 설명이되는 이름의 토픽 브랜치를 만든다.
+		3. 코드를 수정한다.
+		4. 잘 고쳤는지 확인한다.
+		5. 토픽 브랜치에 커밋한다.
+		6. GitHub의 개인 저장소에 토픽 브랜치를 Push 한다.
+		7. 원 저장소에 Pull Request를 만들어 작성한다.
+- 팁
+	- 이슈와 연동(`#{issue number}`)
+	- Markdown, GItHub Flavored Markdown
+
+### GibHub 프로젝트 관리하기
+
+- 새 저장소 만들기
+	- `New repository`
+- 동료 추가하기
+	- [Setting] - [Collaborators]
+- Pull Request 관리하기
+ 	- 이메일 알림
+	- Pull Request로 함께 일하기
+	- 멘션과 알림(`@`)
+	- 알림 페이지
+- 특별한 파일
+	- README
+		- `.md`, `.asciidoc` 자동 렌더링
+		- 필요한 정보 제공
+			- 무슨 프로젝트인지
+			- 설정하고 설치하는 방법
+			- 사용법과 실행 결과에 대한 예제
+			- 프로젝트의 라이센스
+			- 기여하는 방법
+	- CONTRIBUTING
+		- 프로젝트 기여 방법과 Pull Request 규칙
+- 프로젝트 관리
+	- Pull Request 기본 브랜치 변경
+	- 프로젝트 넘기기
+		- [Setting] - [Opentions] - [Transfer Ownership]
+
+### Organization 관리하기
+
+- Organization 관리하기
+	- 여러 명이 같은 프로젝트를 관리하는데 사용하는 그룹 계정
+	- 사람들을 서브 그룹으로 나누어 관리하는 도구
+- Organization 기초
+	- `New organization`
+- 팀
+	- 저장소에서 함께 일하는 사람을 관리하는 효과적인 도구
+- 감사 로그
+	- 소유자는 Organization에서 일어나는 모든 정보를 알 수 있다.
+
+### GitHub 스크립팅
+
+- 타 서비스 통합
+- 훅과 서비스 이용
+- 서비스
+	- CI, 버그 트래커, 이슈 트래커, 채팅, 문서 시스템 연동
+	- GitHub에서 제공해주는 서비스가 있는지 확인
+	- push email 전송, push jenkins test
+- 훅
+	- 서비스에 없는 사이트나 외부 서비스와 연동하고 싶거나 좀 더 세세한 설정을 하고 싶을 때 사용
+	- URL로 HTTP 페이로드를 보내준다.
+- GitHub API
+	- 이벤트의 정보를 좀 더 자세히 알고 싶을 때 사용
