@@ -549,3 +549,54 @@
 	- URL로 HTTP 페이로드를 보내준다.
 - GitHub API
 	- 이벤트의 정보를 좀 더 자세히 알고 싶을 때 사용
+
+
+## Git 도구
+
+### 리버전 조회하기
+
+- SHA-1 해쉬값으로 조회 : `git show {SHA-1}`
+- Log 짧은 해시값 조회 : `git log --abbrev-commit --pretty=oneline`
+- 해당 브랜치의 최근 커밋 조회 : `git show {branch name}`
+- 브랜치와 HEAD가 가리켰던 커밋 로그 조회 : `git reflog`
+	- 비슷한 기능
+		1. `git show HEAD@{n}`
+		2. `git show master@{yesterday}`
+		3. `git log -g master`
+	- Reflog의 일은 모두 로컬의 일이기 때문에 내 Reflog가 동료의 저장소에는 있을 수 없다.
+- 계통 관계 가리키기 (이름뒤에 `^` 붙이기) : `git show HEAD^`
+- 범위 커밋 카리키기
+ 	1. Double Dot
+		- `git log master..exper`
+		- `exper`브랜치 커밋들 중에서 아직 `master`브랜치에 Merge 안된 커밋 내용
+	2. 세 개 이상의 Refs
+		- `git log refA refB ^refC`
+	3. Triple Dot
+		- `git log master...exper`
+		- 두 Refs 사이에 공통적인 커밋을 제외하고 서로 다른 커밋 내용
+
+### 대화형 명령
+
+- `git add -i(-interactive)`
+
+### Stashing과 Cleaning
+
+- stash :  Modified이면서 Tracked 상태인 파일과 Staging Area에 있는 파일들을 보관해두는 장소
+- stash 저장 : `git stash` or `git stash save`
+- stash 목록 : `git stash list`
+- stash 가져오기 : `git stash apply`
+	- `stash@{n}` : 해당 stash 적용
+	- `--index` : 파일 적용
+- stash 제거 : `git drop`
+- stash 적용한 브랜치 만들기 : `git stash branch {branch name}`
+
+- 워킹 디렉토링 청소하기 : `git clean (-x) (-f) (-d) (-n)`
+
+### 내 작업에 서명하기
+
+- GPG 이용하면 암호학적으로 안전하게 만들 수 있다.
+- 개인키 설치 : `gpg --genkey`
+- GPG 개인키 설정 : `git config --global user.signingkey {}`
+- 태그 서명 : `git tag -s`
+- 커밋 서명 : `git commit -S`
+- v1.8.3 이후에는 `git merge`와 `git pull`을 GPG 서명 정보를 이용해 제한 할 수 있다.
