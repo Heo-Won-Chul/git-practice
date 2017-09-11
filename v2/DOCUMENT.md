@@ -600,3 +600,104 @@
 - 태그 서명 : `git tag -s`
 - 커밋 서명 : `git commit -S`
 - v1.8.3 이후에는 `git merge`와 `git pull`을 GPG 서명 정보를 이용해 제한 할 수 있다.
+
+### 검색
+
+- `git grep` : 커밋 트리의 내용이나 워킹 디렉토리의 내용을 문자열이나 정규 표현식을 이용해 검색
+	- `-n` : 라인 번호 출력
+	- `--count` : 파일 갯수
+	- `-p` : 함수 or 메소드
+	- `--and` : 그리고
+	- `--break`, `--heading` : 읽기 쉬운 형태 출력
+
+- `git log` : Diff 내용을 검색하여 __언제__ 추가&변경 되었는지 검색
+	- `-S` : 해당 문자열 검색
+	- `-G` : 정규식 검색
+
+- `git log -L` : 라인 히스토리 검색
+
+### 히스토리 단장하기
+
+- 중앙서버에 Push한 커밋은 절대 고치지 말아야 한다.
+- 마지막 커밋 수정하기 : `git commit --amend`
+- 커밋 메시지를 여러 개 수정하기 : `git rebase -i HEAD~{n}`
+- 커밋 순서 바꾸기 : 대화형 Rebase 도구
+- 커밋 합치기 : 대화형 Rebase 도구
+- 히스토리 전체에 필요한 것만 골라내는데 사용하는 도구 : `filter-branch`
+	- 모든 커밋에서 파일 제거
+	- 하위 디렉토리를 루트 디렉토리로 만들기
+	- 모든 커밋의 이메일 주소를 수정하기
+
+### Reset 명확히 알고 가기
+
+| 트리			| 역할								|
+|---------------|-------------------------------------|
+| HEAD			| 마지막 커밋 스냅샷, 다음 커밋의 부모 커밋 |
+| Index			| 다음에 커밋할 스냅샷 					|
+| 워킹 디렉토리	| 샌드박스 								|
+
+- `reset`
+	1. HEAD 이동 (`reset --soft`)
+		- `git commit --amend`와 동일한 결과
+	2. Index 업데이트 (`reset --mixed`)
+		- 디폴트 옵션
+		- Index를 현재 HEAD가 가리키는 스냅샷으로 업데이트
+	3. 워킹 디렉토리 이동 (`reset --hard`)
+		- 워킹 디렉토리까지 업데이트
+- 합치기(Squash) : `git reset --soft HEAD~{n}`
+
+### 고급 Merge
+
+- Merge 충돌
+	- Merge 하기 전에 워킹 디렉토리를 깔끔히 정리하는 것이 좋다.
+- Merge 취소
+	- `git merge --abort`
+	- `git reset --hard HEAD`
+- 공백 무시하기 : `git merge -X(ignore-space-change|ignore-all-space)`
+- 커밋 되돌리기 : `git revert`
+- 서브트리 Merge : `git read-tree`
+
+### Rerere
+
+- `"reuse recorded resolution"` : 기록한 해결책 재사용하기
+
+### Git으로 버그 찾기
+
+- `git blame` : 메소드의 각 라인을 누가 언제 마지막으로 고쳤는지 확인
+- `git bisect` : 커밋 히스토리를 이진 탐색
+
+### 서브모듈
+
+- 서브 모듈 추가 : `git submodule add {url}`
+- `.gitmodules`
+- `git clone` 하면 서브모듈 디렉토리는 빈 디렉토리 이다.
+	- `git submodule init`
+	- `git submodule update`
+	- `git clone --recursive`와 동일
+- 서브 모듈 업데이트 : `git fetch` + `git merge` = `git submodule update --remote`
+- 서브 모듈 커밋된 내용 확인 : `git diff --submodule`
+
+### Bundle
+
+- 데이터를 한 파일에 몰아넣는 것 : `git bundle`
+	1. 네트워크 불통
+	2. 보안상의 이유로 로컬 네트워크에 접속이 불가능할 때
+	3. 통신 인터페이스 장비가 고장났을 때
+	4. 공용 서버에 접근하지 못할 때
+- Bundle 파일 생성 : `git bundle create`
+	- `commits.bundle` 파일 생성
+- Bundle 파일 검증 : `git bundle verify`
+
+### Replace
+
+- 히스토리에 저장된 Git의 개체는 기본적으로 변경이 불가능 하다. 하지만, 변경된 것 처럼 보이게 하는 기능 : `git replace`
+
+### Credential 저장소
+
+- 인증정보를 저장해두고 자동으로 입력해주는 시스템 제공
+	- 기본 : 매번 사용자 이름과 임호 입력
+	- "cache" : 메모리에 인증정보 저장. 15분 유지
+	- "store" : Disk의 텍스트 파일로 저장 및 유지
+		- 사용자 홈 디렉토리 아래에 일반 텍스트 파일로 저장되므로 보안에 취약
+	- Mac은 `osxkeychain` 모드 사용(암호화)
+	- Windows는 `wincred` Helper 사용(암호화)
